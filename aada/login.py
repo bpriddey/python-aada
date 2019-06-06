@@ -128,6 +128,8 @@ class Login:
         page = pages[0]
 
         async def _saml_response(req):
+            if self._debug:
+                print('Running _saml_response for URL:',req.url)
             if req.url == 'https://signin.aws.amazon.com/saml':
                 self.saml_response = parse_qs(req.postData)['SAMLResponse'][0]
                 await req.respond({
@@ -163,14 +165,16 @@ class Login:
                 else:
                     print('Processing MFA authentication...')
 
+            # initiate wait for SAML call to AWS
+            page.on('request', _saml_response)
+            await page.setRequestInterception(True)
+
             if self._azure_kmsi:
                 await page.waitForSelector(
                     'form[action="/kmsi"]', timeout=self._AWAIT_TIMEOUT)
                 await page.waitForSelector('#idBtn_Back')
                 await page.click('#idBtn_Back')
 
-            page.on('request', _saml_response)
-            await page.setRequestInterception(True)
 
             wait_time = time.time() + self._MFA_TIMEOUT
             while time.time() < wait_time and not self.saml_response:
