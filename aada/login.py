@@ -265,7 +265,7 @@ class Login:
         kr_pass = None
         print('Azure username: {}'.format(self._azure_username))
 
-        if KEYRING and self._use_keyring:
+        if KEYRING and (self._use_keyring.lower() == 'true'):
             try:
                 print('Getting password from keyring')
                 kr_pass = keyring.get_password('aada', self._azure_username)
