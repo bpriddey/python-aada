@@ -3,9 +3,9 @@ import logging
 import argparse
 
 from botocore.session import Session, get_session
-from . import __version__
-from .login import Login
-from .configure import Configure
+from aada import __version__
+from aada.login import Login
+from aada.configure import Configure
 
 LOG = logging.getLogger('aada')
 LOG_FORMAT = (
