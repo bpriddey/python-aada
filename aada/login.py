@@ -9,7 +9,7 @@ import asyncio
 import time
 
 from datetime import datetime
-from xml.etree import ElementTree as ET
+from defusedxml import ElementTree as ET
 from urllib.parse import quote, parse_qs
 
 from awscli.customizations.configure.writer import ConfigFileWriter
